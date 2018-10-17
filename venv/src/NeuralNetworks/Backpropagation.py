@@ -26,6 +26,18 @@ def getDataSet():
 
     return x, y, theta1, theta2
 
+def sigmoid(x):
+    return 1/(1 + np.exp(-x))
+
+def feedforward(x, theta1, theta2):
+    hidden1 = np.dot(x, theta1.T)
+    hidden1 = np.insert(hidden1, 0, 1, axis=1)
+    hidden1 = sigmoid(hidden1)
+
+    hidden2 = np.dot(hidden1, theta2.T)
+    hidden2 = sigmoid(hidden2)
+    print(hidden2)
+
 def visualData(x):
     select_some = np.random.choice(np.arange(x.shape[0]), 100)
     image = x[select_some, :]
@@ -55,5 +67,6 @@ if __name__ == '__main__':
     x, y, theta1, theta2 = getDataSet()
     # visualData(x)
     x = np.insert(x, 0, 1, axis=1)
-    print(x.shape, theta1.shape, theta2.shape, y.shape)
-    print(coding_y(y))
+    # print(x.shape, theta1.shape, theta2.shape, y.shape)
+    # print(coding_y(y))
+    feedforward(x, theta1, theta2)
