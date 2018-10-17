@@ -17,10 +17,16 @@ def splitdataSet(data):
     y_matrix = np.matrix(y_values)
     return x_matrix, y_matrix
 
+'''
+    cost function = sum((h(x)-y)**2)/2m 
+    h(x) = x * theta(i).T  (x0 = 1)
+'''
 def computeCost(x_matrix, y_matrix, theta):
     hyp = np.power((x_matrix*theta.T - y_matrix), 2)
     return sum(hyp) / (2*len(y_matrix))
-
+'''
+    theta(j) = theta(j) - alpha * sum((h(x) - y) * x) / m
+'''
 def gradientDescent(x_matrix, y_matrix, alpha, theta):
     cost = []
 

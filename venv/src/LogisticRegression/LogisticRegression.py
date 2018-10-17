@@ -3,6 +3,16 @@ import numpy as np
 import pandas as pd
 import scipy.optimize as opt
 
+'''
+    h(x) = g(x * theta.T)
+    g(z) = 1/(1 + log(-z))
+    
+    cost function: j(theta) = -sum(y * log(h(x)) + (1-y) * log(1-h(x)))/m
+    gradient: = sum((h(x)-y)x)/m
+    
+    opt.fmin_tnc函数对应matlab中的fminunc函数
+'''
+
 def getdataSet():
     path = '/home/y_labor/ml/machine-learning-ex2/ex2/ex2data1.txt'
     data = pd.read_csv(path, names=['Exam1score', 'Exam2score', 'Admitted'])

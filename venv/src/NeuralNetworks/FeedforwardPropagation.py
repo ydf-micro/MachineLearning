@@ -3,6 +3,11 @@ import numpy as np
 import pandas as pd
 from scipy.io import loadmat
 
+'''
+    a = g(z)
+    z = sum(x * theta.T)
+'''
+
 init_lamda = 0.1
 
 def getDataSet():

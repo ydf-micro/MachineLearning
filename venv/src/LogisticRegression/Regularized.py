@@ -3,6 +3,14 @@ import numpy as np
 import pandas as pd
 import scipy.optimize as opt
 
+'''
+    mapFeature(x) = [1, x1, x2, x1**2, x1x2, x2**2, x1**3, ..., x1x2**5, x2**6]
+    cost function j(theta) = -sum(y * log(h(x)) + (1-y) * log(1-h(x)))/m + lamda*sum(theta**2)/2m 注意这里的theta从1开始，不惩罚第0个
+    gradient: = sum((h(x)-y)x)/m + lamda * theta / m 同理，这里的theta也是从1开始
+    
+    opt.fmin_tnc函数对应matlab中的fminunc函数
+'''
+
 init_lamda = 0.1
 
 def getdataSet():
