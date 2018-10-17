@@ -11,8 +11,13 @@ from scipy.io import loadmat
 init_lamda = 0.1
 
 def getDataSet():
-    data = loadmat('/home/y_labor/ml/machine-learning-ex3/ex3/ex3data1.mat')
-    weight = loadmat('/home/y_labor/ml/machine-learning-ex3/ex3/ex3weights.mat')
+    #linux下
+    # data = loadmat('/home/y_labor/ml/machine-learning-ex3/ex3/ex3data1.mat')
+    # weight = loadmat('/home/y_labor/ml/machine-learning-ex3/ex3/ex3weights.mat')
+
+    #windows下
+    data = loadmat('C:\\Users\ydf_m\Desktop\machinelearning\machine-learning-ex3\ex3\ex3data1.mat')
+    weight = loadmat('C:\\Users\ydf_m\Desktop\machinelearning\machine-learning-ex3\ex3\ex3weights.mat')
 
     x      = data['X']
     y      = data['y']
