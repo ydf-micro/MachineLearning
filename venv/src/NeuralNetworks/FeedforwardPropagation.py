@@ -12,12 +12,12 @@ init_lamda = 0.1
 
 def getDataSet():
     #linux下
-    # data = loadmat('/home/y_labor/ml/machine-learning-ex3/ex3/ex3data1.mat')
-    # weight = loadmat('/home/y_labor/ml/machine-learning-ex3/ex3/ex3weights.mat')
+    data = loadmat('/home/y_labor/ml/machine-learning-ex3/ex3/ex3data1.mat')
+    weight = loadmat('/home/y_labor/ml/machine-learning-ex3/ex3/ex3weights.mat')
 
     #windows下
-    data = loadmat('C:\\Users\ydf_m\Desktop\machinelearning\machine-learning-ex3\ex3\ex3data1.mat')
-    weight = loadmat('C:\\Users\ydf_m\Desktop\machinelearning\machine-learning-ex3\ex3\ex3weights.mat')
+    # data = loadmat('C:\\Users\ydf_m\Desktop\machinelearning\machine-learning-ex3\ex3\ex3data1.mat')
+    # weight = loadmat('C:\\Users\ydf_m\Desktop\machinelearning\machine-learning-ex3\ex3\ex3weights.mat')
 
     x      = data['X']
     y      = data['y']
@@ -35,14 +35,13 @@ if __name__ == '__main__':
     x, y, theta1, theta2 = getDataSet()
     # print(x.shape, theta1.shape, theta2.shape, y.shape)
 
-    hidden1 = np.dot(x, theta1.T)
-    hidden1 = np.insert(hidden1, 0, 1, axis=1)
-    hidden1 = sigmoid(hidden1)
+    hidden1_in = np.dot(x, theta1.T)
+    hidden1_out = np.insert(sigmoid(hidden1_in), 0, 1, axis=1)
 
-    hidden2 = np.dot(hidden1, theta2.T)
-    hidden2 = sigmoid(hidden2)
+    output_in = np.dot(hidden1_out, theta2.T)
+    output_out = sigmoid(output_in)
 
-    result = np.argmax(hidden2, axis=1)
+    result = np.argmax(output_out, axis=1)
     result = result.reshape(5000, 1)
     result += 1
     accuracy = np.mean(result == y)
