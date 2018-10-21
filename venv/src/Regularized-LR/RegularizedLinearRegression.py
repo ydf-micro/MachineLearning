@@ -2,21 +2,21 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plot
 from scipy.io import loadmat
-from scipy.optimize import minimize
+import scipy.optimize as opt
 
 '''
     minimize函数中的fun的函数各个变量必须是一维的
 '''
 
-lamda_init = 1
+lamda_init = 0
 
 def getDataSet():
 
     #linux下
-    data = loadmat('/home/y_labor/ml/machine-learning-ex5/ex5/ex5data1.mat')
+    # data = loadmat('/home/y_labor/ml/machine-learning-ex5/ex5/ex5data1.mat')
 
     #windows下
-    # data = loadmat('C:\\Users\ydf_m\Desktop\machinelearning\machine-learning-ex5\ex5\ex5data1.mat')
+    data = loadmat('C:\\Users\ydf_m\Desktop\machinelearning\machine-learning-ex5\ex5\ex5data1.mat')
 
     X = data['X']
     y = data['y']
@@ -48,17 +48,44 @@ def gradient(theta, X, y):
 
 def gradientreg(theta, X, y, lamda=lamda_init):
     grad = gradient(theta, X, y)
-    theta[0] = 0
+    temp = np.copy(theta)   #这里用theta的拷贝，不改变原来的theta
+    temp[0] = 0
     return grad + lamda*theta/len(X)
+
+def train(X, y, lamda=lamda_init):
+    min = opt.minimize(fun=costreg, x0=theta, jac=gradientreg, method='TNC', args=(X, y, lamda))
+    return min.x
+
+def learning_curve(X, y, lamda=lamda_init):
+    length = np.arange(1, len(X)+1)
+    train_cost = []
+    cross_valid_cost = []
+
+    for i in length:
+        train_theta = train(X[:i], y[:i], lamda)
+        train_cost.append(costreg(train_theta, X[:i], y[:i], lamda))
+        cross_valid_cost.append(costreg(train_theta, Xval, yval, lamda))
+
+    return length, train_cost, cross_valid_cost
 
 if __name__ == '__main__':
     X, y, Xval, yval, Xtest, ytest = getDataSet()
-    theta = np.ones(X.shape[1])
-    print(costreg(theta, X, y))
-    print(gradientreg(theta, X, y))
+    theta = np.zeros(X.shape[1])
+    # print(costreg(theta, X, y))
+    # print(gradientreg(theta, X, y))
 
-    min = minimize(fun=costreg, x0=theta, jac=gradientreg, method='TNC', args=(X, y, lamda_init))
+    opt_theta = train(X, y)
+    x, train_cost, cross_valid_cost = learning_curve(X, y)
 
+    fig = plot.figure(num=2, figsize=(12, 5))
+    ax1 = fig.add_subplot(1, 2, 1)
+    ax2 = fig.add_subplot(1, 2, 2)
 
-    plot.scatter(X[:, 1:], y)
+    ax1.plot(X[:, 1], np.dot(X, opt_theta.T), c='r')
+    ax1.scatter(X[:, 1:], y)
+
+    ax2.plot(x, train_cost, c='g', label='Train')
+    ax2.plot(x, cross_valid_cost, c='b', label='Cross Validation')
+    ax2.legend(['Train', 'Cross Validation'])
+
     plot.show()
