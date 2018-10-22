@@ -7,10 +7,10 @@ import scipy.optimize as opt
 def getDataSet():
 
     #linux下
-    data = loadmat('/home/y_labor/ml/machine-learning-ex5/ex5/ex5data1.mat')
+    # data = loadmat('/home/y_labor/ml/machine-learning-ex5/ex5/ex5data1.mat')
 
     #windows下
-    # data = loadmat('C:\\Users\ydf_m\Desktop\machinelearning\machine-learning-ex5\ex5\ex5data1.mat')
+    data = loadmat('C:\\Users\ydf_m\Desktop\machinelearning\machine-learning-ex5\ex5\ex5data1.mat')
 
     X = data['X']
     y = data['y']
@@ -118,9 +118,9 @@ if __name__ == '__main__':
 
     #绘图
     fig = plot.figure(num=3, figsize=(10, 15))
-    ax1 = fig.add_subplot(3, 1, 1)
-    ax2 = fig.add_subplot(3, 1, 2)
-    ax3 = fig.add_subplot(3, 1, 3)
+    ax1 = fig.add_subplot(2, 2, 1)
+    ax2 = fig.add_subplot(2, 2, 2)
+    ax3 = fig.add_subplot(2, 1, 2)
 
     ax1.plot(xx[:, 1:], np.dot(xx_poly, opt_theta.T), c='r')
     ax1.scatter(X[:, 1:], y)
