@@ -4,8 +4,6 @@ import matplotlib.pyplot as plot
 from scipy.io import loadmat
 import scipy.optimize as opt
 
-lamda_init = 0
-
 def getDataSet():
 
     #linux下
@@ -33,33 +31,47 @@ def cost(theta, X, y):
     h = np.dot(X, theta.T)
     return np.sum((h-y.flatten())**2) / (2*len(X))
 
-def costreg(theta, X, y, lamda=lamda_init):
+def costreg(theta, X, y, lamda):
     return cost(theta, X, y) + lamda*np.sum(theta[1:]**2)/(2*len(X))
 
 def gradient(theta, X, y):
     h = np.dot(X, theta.T)
     return np.dot((h-y.flatten()).T, X) / len(X)
 
-def gradientreg(theta, X, y, lamda=lamda_init):
+def gradientreg(theta, X, y, lamda):
     grad = gradient(theta, X, y)
     temp = np.copy(theta)   #这里用theta的拷贝，不改变原来的theta
     temp[0] = 0
-    return grad + lamda*theta/len(X)
+    return grad + lamda*temp/len(X)
 
-def train(X, y, lamda=lamda_init):
+
+def train(X, y, lamda):
     theta = np.zeros(X.shape[1])
     min = opt.minimize(fun=costreg, x0=theta, jac=gradientreg, method='TNC', args=(X, y, lamda))
     return min.x
 
-def learning_curve(X, y, Xval, yval, lamda=lamda_init):
+def learning_curve(X, y, Xval, yval, lamda):
     length = np.arange(1, len(X)+1)
     train_cost = []
     cross_valid_cost = []
 
     for i in length:
         train_theta = train(X[:i], y[:i], lamda)
-        train_cost.append(costreg(train_theta, X[:i], y[:i], lamda))
-        cross_valid_cost.append(costreg(train_theta, Xval, yval, lamda))
+        train_cost.append(costreg(train_theta, X[:i], y[:i], 0))
+        cross_valid_cost.append(costreg(train_theta, Xval, yval, 0))
+
+    return train_cost, cross_valid_cost
+
+def learning_curve_lamda(X, y, Xval, yval, lamda):
+    train_cost = []
+    cross_valid_cost = []
+
+    for i in lamda:
+        train_theta = train(X, y, i)
+        train_cost.append(costreg(train_theta, X, y, 0))
+        cross_valid_cost.append(costreg(train_theta, Xval, yval, 0))
+
+    print(lamda[np.argmin(cross_valid_cost)])
 
     return train_cost, cross_valid_cost
 
@@ -84,15 +96,17 @@ def FeatureScaling(X, u, s):
     return X_Scal
 
 if __name__ == '__main__':
+    lamda = [0, 0.001, 0.003, 0.01, 0.03, 0.1, 0.3, 1, 3, 10]
+    init_lamda = 0
     X, y, Xval, yval, Xtest, ytest = getDataSet()
     X_poly = polyFeatures(X)
     u_X, s_X = get_mean_std(X_poly)
     X_poly = FeatureScaling(X_poly, u_X, s_X)
-    opt_theta = train(X_poly, y)
+    opt_theta = train(X_poly, y, init_lamda)
 
     Xval_poly = polyFeatures(Xval)
     Xval_poly = FeatureScaling(Xval_poly, u_X, s_X)
-    train_cost, cross_valid_cost = learning_curve(X_poly, y, Xval_poly, yval)
+    train_cost, cross_valid_cost = learning_curve(X_poly, y, Xval_poly, yval, init_lamda)
 
     xx = np.arange(-80, 60, 1.4)
     xx = xx.reshape(-1, 1)
@@ -100,10 +114,13 @@ if __name__ == '__main__':
     xx_poly = polyFeatures(xx)
     xx_poly = FeatureScaling(xx_poly, u_X, s_X)
 
+    train_cost_lamda, cross_valid_cost_lamda = learning_curve_lamda(X_poly, y, Xval_poly, yval, lamda)
+
     #绘图
-    fig = plot.figure(num=2, figsize=(12, 5))
-    ax1 = fig.add_subplot(1, 2, 1)
-    ax2 = fig.add_subplot(1, 2, 2)
+    fig = plot.figure(num=3, figsize=(10, 15))
+    ax1 = fig.add_subplot(3, 1, 1)
+    ax2 = fig.add_subplot(3, 1, 2)
+    ax3 = fig.add_subplot(3, 1, 3)
 
     ax1.plot(xx[:, 1:], np.dot(xx_poly, opt_theta.T), c='r')
     ax1.scatter(X[:, 1:], y)
@@ -111,6 +128,10 @@ if __name__ == '__main__':
     ax2.plot(np.arange(1, len(X)+1), train_cost, c='g', label='Train')
     ax2.plot(np.arange(1, len(X)+1), cross_valid_cost, c='b', label='Cross Validation')
     ax2.legend(['Train', 'Cross Validation'])
+
+    ax3.plot(lamda, train_cost_lamda, c='g', label='Train')
+    ax3.plot(lamda, cross_valid_cost_lamda, c='b', label='Cross Validation')
+    ax3.legend(['Train', 'Cross Validation'])
 
     plot.show()
 

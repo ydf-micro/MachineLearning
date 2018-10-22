@@ -50,7 +50,7 @@ def gradientreg(theta, X, y, lamda=lamda_init):
     grad = gradient(theta, X, y)
     temp = np.copy(theta)   #这里用theta的拷贝，不改变原来的theta
     temp[0] = 0
-    return grad + lamda*theta/len(X)
+    return grad + lamda*temp/len(X)
 
 def train(X, y, lamda=lamda_init):
     theta = np.zeros(X.shape[1])
