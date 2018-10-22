@@ -13,10 +13,10 @@ lamda_init = 0
 def getDataSet():
 
     #linux下
-    # data = loadmat('/home/y_labor/ml/machine-learning-ex5/ex5/ex5data1.mat')
+    data = loadmat('/home/y_labor/ml/machine-learning-ex5/ex5/ex5data1.mat')
 
     #windows下
-    data = loadmat('C:\\Users\ydf_m\Desktop\machinelearning\machine-learning-ex5\ex5\ex5data1.mat')
+    # data = loadmat('C:\\Users\ydf_m\Desktop\machinelearning\machine-learning-ex5\ex5\ex5data1.mat')
 
     X = data['X']
     y = data['y']
@@ -53,10 +53,11 @@ def gradientreg(theta, X, y, lamda=lamda_init):
     return grad + lamda*theta/len(X)
 
 def train(X, y, lamda=lamda_init):
+    theta = np.zeros(X.shape[1])
     min = opt.minimize(fun=costreg, x0=theta, jac=gradientreg, method='TNC', args=(X, y, lamda))
     return min.x
 
-def learning_curve(X, y, lamda=lamda_init):
+def learning_curve(X, y, Xval, yval, lamda=lamda_init):
     length = np.arange(1, len(X)+1)
     train_cost = []
     cross_valid_cost = []
@@ -70,12 +71,11 @@ def learning_curve(X, y, lamda=lamda_init):
 
 if __name__ == '__main__':
     X, y, Xval, yval, Xtest, ytest = getDataSet()
-    theta = np.zeros(X.shape[1])
     # print(costreg(theta, X, y))
     # print(gradientreg(theta, X, y))
 
     opt_theta = train(X, y)
-    x, train_cost, cross_valid_cost = learning_curve(X, y)
+    x, train_cost, cross_valid_cost = learning_curve(X, y, Xval, yval)
 
     fig = plot.figure(num=2, figsize=(12, 5))
     ax1 = fig.add_subplot(1, 2, 1)
