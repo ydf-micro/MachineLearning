@@ -7,10 +7,10 @@ import scipy.optimize as opt
 def getDataSet():
 
     #linux下
-    # data = loadmat('/home/y_labor/ml/machine-learning-ex5/ex5/ex5data1.mat')
+    data = loadmat('/home/y_labor/ml/machine-learning-ex5/ex5/ex5data1.mat')
 
     #windows下
-    data = loadmat('C:\\Users\ydf_m\Desktop\machinelearning\machine-learning-ex5\ex5\ex5data1.mat')
+    # data = loadmat('C:\\Users\ydf_m\Desktop\machinelearning\machine-learning-ex5\ex5\ex5data1.mat')
 
     X = data['X']
     y = data['y']
@@ -117,7 +117,7 @@ if __name__ == '__main__':
     train_cost_lamda, cross_valid_cost_lamda = learning_curve_lamda(X_poly, y, Xval_poly, yval, lamda)
 
     #绘图
-    fig = plot.figure(num=3, figsize=(10, 15))
+    fig = plot.figure(num=3, figsize=(25, 20))
     ax1 = fig.add_subplot(2, 2, 1)
     ax2 = fig.add_subplot(2, 2, 2)
     ax3 = fig.add_subplot(2, 1, 2)
