@@ -5,14 +5,14 @@ from scipy.io import loadmat
 import scipy.optimize as opt
 from sklearn import svm
 
-C = 1
+C = 100
 
 def getDataSet():
     # linux下
-    data = loadmat('/home/y_labor/ml/machine-learning-ex6/ex6/ex6data1.mat')
+    # data = loadmat('/home/y_labor/ml/machine-learning-ex6/ex6/ex6data1.mat')
 
     # windows下
-    # data = loadmat('C:\\Users\ydf_m\Desktop\machinelearning\machine-learning-ex6/ex6/ex6data1.mat')
+    data = loadmat('C:\\Users\ydf_m\Desktop\machinelearning\machine-learning-ex6/ex6/ex6data1.mat')
 
     X = data['X']
     y = data['y']
@@ -40,13 +40,13 @@ def getDataSet():
 def svmboundary(X, y, c):
     clf = svm.SVC(C=c, kernel='linear', gamma='auto')
     clf.fit(X, y.flatten())
-    x1 = np.linspace(0, 4.5, 50)
-    x2 = np.linspace(1.5, 5, 50)
+    x1 = np.linspace(0, 4.5, 500)
+    x2 = np.linspace(1.5, 5, 500)
     xx, yy = np.meshgrid(x1, x2)
-    print(xx.shape, yy.shape)
-    z = clf.predict([xx.flatten(), yy.flatten()])
+    xy = np.c_[xx.flatten(), yy.flatten()]
+    z = clf.predict(xy)
     z = z.reshape(xx.shape)
-    plot.contour(xx, yy, z)
+    plot.contour(x1, x2, z)
 
 
 if __name__ == '__main__':
@@ -60,13 +60,12 @@ if __name__ == '__main__':
     #
     # x1 = np.linspace(0, 4.5, 50)
     # x2 = -(opt_theta[0] + opt_theta[1]*x1) / opt_theta[2]
-
-
-
     # plot.plot(x1, x2, c='r')
-    # for i in range(y.shape[0]):
-    #     if y[i] == 0:
-    #         plot.scatter(X[i, 1], X[i, 2], marker='o', c='y')
-    #     else:
-    #         plot.scatter(X[i, 1], X[i, 2], marker='x', c='b')
+
+
+    for i in range(y.shape[0]):
+        if y[i] == 0:
+            plot.scatter(X[i, 0], X[i, 1], marker='o', c='y')
+        else:
+            plot.scatter(X[i, 0], X[i, 1], marker='x', c='b')
     plot.show()
