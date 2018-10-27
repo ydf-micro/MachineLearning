@@ -47,6 +47,8 @@ def svmPredict(X, y, Xval, yval):
                 best_score = score
                 c, sigma = C, sig
 
+    print(c, sigma)
+
     return c, sigma
 
 if __name__ == '__main__':
