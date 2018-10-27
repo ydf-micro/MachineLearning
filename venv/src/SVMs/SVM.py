@@ -9,10 +9,10 @@ C = 100
 
 def getDataSet():
     # linux下
-    # data = loadmat('/home/y_labor/ml/machine-learning-ex6/ex6/ex6data1.mat')
+    data = loadmat('/home/y_labor/ml/machine-learning-ex6/ex6/ex6data1.mat')
 
     # windows下
-    data = loadmat('C:\\Users\ydf_m\Desktop\machinelearning\machine-learning-ex6/ex6/ex6data1.mat')
+    # data = loadmat('C:\\Users\ydf_m\Desktop\machinelearning\machine-learning-ex6/ex6/ex6data1.mat')
 
     X = data['X']
     y = data['y']
