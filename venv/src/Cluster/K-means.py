@@ -5,10 +5,10 @@ from scipy.io import loadmat
 
 def getDataSet():
     # linux下
-    data = loadmat('/home/y_labor/ml/machine-learning-ex7/ex7/ex7data2.mat')
+    # data = loadmat('/home/y_labor/ml/machine-learning-ex7/ex7/ex7data2.mat')
 
     # windows下
-    # data = loadmat('C:\\Users\ydf_m\Desktop\machinelearning\machine-learning-ex7/ex7/ex7data2.mat')
+    data = loadmat('C:\\Users\ydf_m\Desktop\machinelearning\machine-learning-ex7/ex7/ex7data2.mat')
 
     X = data['X']
 
@@ -37,9 +37,9 @@ def computeCentroids(X, idx):
 
     return np.array(centroids)
 
-def kMeansInitCentroids(X):
+def kMeansInitCentroids(X, K):
     m = X.shape[0]
-    idx = np.random.choice(m, 3)
+    idx = np.random.choice(m, K)
     centroids = X[idx]
 
     return np.array(centroids).reshape(3, 2)
@@ -50,8 +50,9 @@ def compareidx(pre_idx, idx):
             return 1
     return 0
 
-def Kmeans(X):
-    centroids = kMeansInitCentroids(X)
+def Kmeans(X, K):
+    centroids = kMeansInitCentroids(X, K)
+    # centroids = np.array([[3, 3], [6, 2], [8, 5]])
     all_centroids = []
     all_centroids.append(centroids)
     idx = np.empty((X.shape[0], 1))
@@ -68,7 +69,7 @@ def Kmeans(X):
 
 if __name__ == '__main__':
     X = getDataSet()
-    idx, all_centroids = Kmeans(X)
+    idx, all_centroids = Kmeans(X, 3)
 
     plot.plot(all_centroids[:, 0, 0], all_centroids[:, 0, 1], 'x--', c='k')
     plot.plot(all_centroids[:, 1, 0], all_centroids[:, 1, 1], 'x--', c='k')
