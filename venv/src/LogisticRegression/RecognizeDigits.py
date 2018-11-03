@@ -23,12 +23,12 @@ def getDataSet():
 def visualData(x):
     select_some = np.random.choice(np.arange(x.shape[0]), 100)
     image = x[select_some, :]
-    fig, ax_array = plot.subplots(10, 10, sharex=True, sharey=True, figsize=(8, 8))
+    fig, ax_array = plot.subplots(10, 10, figsize=(8, 8))
     for row in range(10):
         for col in range(10):
             ax_array[row, col].matshow(image[10*row+col].reshape(20, 20))
-    plot.xticks([])
-    plot.yticks([])
+            ax_array[row, col].set_xticks([])
+            ax_array[row, col].set_yticks([])
     plot.show()
 
 def sigmoid(theta, x):

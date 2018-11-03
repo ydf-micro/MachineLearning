@@ -46,7 +46,7 @@ if __name__ == '__main__':
     fig = plot.figure(num=2, figsize=(12, 5))
     ax1 = fig.add_subplot(1, 2, 1)
     ax2 = fig.add_subplot(1, 2, 2)
-    ax1.scatter(X[:, 0], X[:, 1], c='', edgecolors='b', marker='.')
+    ax1.scatter(X[:, 0], X[:, 1], c='', edzgecolors='b', marker='.')
     ax1.plot([mean[0], 1.5 * S[0] * U[0, 0] + mean[0]], [mean[1], 1.5 * S[0] * U[0, 1] + mean[1]], c='r',
              label='frist PC')
     ax1.plot([mean[0], 1.5 * S[1] * U[1, 0] + mean[0]], [mean[1], 1.5 * S[1] * U[1, 1] + mean[1]], c='k',
