@@ -5,10 +5,10 @@ from scipy.io import loadmat
 
 def getDataSet():
     # linux下
-    # data = loadmat('/home/y_labor/ml/machine-learning-ex7/ex7/ex7data2.mat')
+    data = loadmat('/home/y_labor/ml/machine-learning-ex7/ex7/ex7data2.mat')
 
     # windows下
-    data = loadmat('C:\\Users\ydf_m\Desktop\machinelearning\machine-learning-ex7/ex7/ex7data2.mat')
+    # data = loadmat('C:\\Users\ydf_m\Desktop\machinelearning\machine-learning-ex7/ex7/ex7data2.mat')
 
     X = data['X']
 
