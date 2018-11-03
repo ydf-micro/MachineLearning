@@ -28,21 +28,19 @@ def findClosestCentroids(X, centroids):
 
 def computeCentroids(X, idx):
     centroids = []
-    idx = idx.reshape(-1, 1)
-    X_idx = np.hstack((X, idx))
 
     for i in range(len(np.unique(idx))):
-        value = X[np.where(X_idx[:, 2] == i)].mean(axis=0)
+        value = X[idx==i].mean(axis=0)
         centroids.append(value)
 
     return np.array(centroids)
 
 def kMeansInitCentroids(X, K):
-    m = X.shape[0]
+    m, n = X.shape
     idx = np.random.choice(m, K)
     centroids = X[idx]
 
-    return np.array(centroids).reshape(3, 2)
+    return np.array(centroids).reshape(K, n)
 
 def compareidx(pre_idx, idx):
     for i in range(len(pre_idx)):
@@ -50,7 +48,7 @@ def compareidx(pre_idx, idx):
             return 1
     return 0
 
-def Kmeans(X, K):
+def executeKmeans(X, K):
     centroids = kMeansInitCentroids(X, K)
     # centroids = np.array([[3, 3], [6, 2], [8, 5]])
     all_centroids = []
@@ -69,7 +67,7 @@ def Kmeans(X, K):
 
 if __name__ == '__main__':
     X = getDataSet()
-    idx, all_centroids = Kmeans(X, 3)
+    idx, all_centroids = executeKmeans(X, 3)
 
     plot.plot(all_centroids[:, 0, 0], all_centroids[:, 0, 1], 'x--', c='k')
     plot.plot(all_centroids[:, 1, 0], all_centroids[:, 1, 1], 'x--', c='k')
