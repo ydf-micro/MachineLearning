@@ -18,7 +18,7 @@ def getDataSet():
 
     return X, Xval, yval
 
-def HighDimensionalDataSet():
+def getHighDimensionalDataSet():
     # linux下
     data = loadmat('/home/y_labor/ml/machine-learning-ex8/ex8/ex8data2.mat')
 
@@ -98,6 +98,16 @@ def plotFigure(X, mu, sigma2, result):
     plot.ylim((0, 30))
     plot.show()
 
+def HighDimensionalDataSet():
+    '''High dimensional dataset'''
+    X, Xval, yval = getHighDimensionalDataSet()
+    mu, sigma2 = estimateGaussian(X)
+    epsilon, F1 = selectThreshold(Xval, mu, sigma2, yval)
+    probability = Gaussian(X, mu, sigma2)
+    result = probability < epsilon
+    anomalies = len([1 for i in result if i])
+    print('epsilon is {:.3}'.format(epsilon) + ', and {} amomalies found'.format(anomalies))
+
 
 if __name__ == '__main__':
     X, Xval, yval = getDataSet()
@@ -105,15 +115,14 @@ if __name__ == '__main__':
     epsilon, F1 = selectThreshold(Xval, mu, sigma2, yval)
     print(epsilon, F1)
     probability = Gaussian(X, mu, sigma2)
-    result =probability < epsilon
+    result = probability < epsilon
     plotFigure(X, mu, sigma2, result)
 
-    '''High dimensional datasset'''
-    X, Xval, yval = HighDimensionalDataSet()
-    mu, sigma2 = estimateGaussian(X)
-    epsilon, F1 = selectThreshold(Xval, mu, sigma2, yval)
-    probability = Gaussian(X, mu, sigma2)
-    result = probability < epsilon
-    anomalies = len([1 for i in result if i])
-    print('epsilon is {:.3}'.format(epsilon) + ', and {} amomalies found'.format(anomalies))
+    HighDimensionalDataSet()
+
+    '''以下是测试部分'''
+    test = np.array([[25, 25], [15, 15]])
+    probability = Gaussian(test, mu, sigma2)
+    print(probability < epsilon)
+
 
